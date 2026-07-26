@@ -5,7 +5,6 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>For Mawutor ✨</title>
   <style>
-    /* Cozy Striped Background Pattern */
     body {
       background-color: #fff4ec;
       background-image: repeating-linear-gradient(
@@ -22,57 +21,41 @@
       min-height: 100vh;
       padding: 20px;
       font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      overflow-x: hidden;
     }
 
     .container {
       width: 100%;
-      max-width: 600px;
+      max-width: 500px;
       border-radius: 24px;
-      padding: 35px;
+      padding: 30px;
       box-shadow: 0 12px 35px rgba(211, 84, 0, 0.15);
       position: relative;
-      overflow: hidden;
       border: 3px solid rgba(255, 255, 255, 0.6);
       transition: background-color 0.5s ease;
     }
 
-    /* LEVEL-SPECIFIC ORANGE THEMES */
-    /* Level 1: Soft Peachy Orange */
-    .container.theme-level-1 {
-      background-color: #fff0e6;
-    }
-    /* Level 2: Warm Terracotta/Warm Orange */
-    .container.theme-level-2 {
-      background-color: #ffe6d5;
-    }
-    /* Level 3: Sunset Cream Orange */
-    .container.theme-level-3 {
-      background-color: #ffdcc5;
-    }
-    /* Level 4: Deep Honey Amber Orange */
-    .container.theme-level-4 {
-      background-color: #ffd2b3;
-    }
-    /* Level 5: Bright Cozy Tangerine */
-    .container.theme-level-5 {
-      background-color: #ffc8a3;
-    }
+    .theme-peach { background-color: #fff0e6; }
+    .theme-terracotta { background-color: #ffe6d5; }
+    .theme-sunset { background-color: #ffdcc5; }
+    .theme-amber { background-color: #ffd2b3; }
+    .theme-tangerine { background-color: #ffc8a3; }
 
-    .level {
+    .page {
       display: none;
-      animation: fadeIn 0.5s ease-in-out forwards;
+      animation: fadeIn 0.4s ease-in-out forwards;
     }
 
-    .level.active {
+    .page.active {
       display: block;
     }
 
     @keyframes fadeIn {
-      from { opacity: 0; transform: translateY(10px); }
+      from { opacity: 0; transform: translateY(8px); }
       to { opacity: 1; transform: translateY(0); }
     }
 
-    h1, h2 {
+    h1, h2, h3 {
       color: #d35400;
       margin-bottom: 15px;
       text-align: center;
@@ -83,11 +66,12 @@
       margin-bottom: 20px;
       text-align: center;
       color: #5c3a21;
+      font-size: 1.05rem;
     }
 
     input, textarea, button {
       width: 100%;
-      padding: 12px 15px;
+      padding: 14px;
       margin-bottom: 15px;
       border-radius: 12px;
       border: 2px solid #f39c12;
@@ -97,7 +81,7 @@
 
     textarea {
       resize: vertical;
-      min-height: 80px;
+      min-height: 100px;
     }
 
     button {
@@ -106,7 +90,7 @@
       border: none;
       font-weight: bold;
       cursor: pointer;
-      transition: all 0.3s;
+      transition: all 0.2s;
       box-shadow: 0 4px 10px rgba(230, 126, 34, 0.3);
     }
 
@@ -118,9 +102,9 @@
     .options-btn {
       background: #ffffff;
       color: #d35400;
-      text-align: left;
-      margin-bottom: 10px;
-      border: 1px solid #f39c12;
+      text-align: center;
+      margin-bottom: 12px;
+      border: 2px solid #f39c12;
     }
 
     .options-btn:hover {
@@ -128,286 +112,270 @@
       color: white;
     }
 
-    .cards-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
-      gap: 15px;
-      margin-bottom: 20px;
-    }
-
-    .card {
-      background: #ffffff;
-      padding: 20px;
-      border-radius: 16px;
-      text-align: center;
-      cursor: pointer;
-      border: 2px dashed #e67e22;
-      transition: transform 0.3s;
-    }
-
-    .card:hover {
-      transform: scale(1.05);
-    }
-
-    .card-content {
-      display: none;
-      font-size: 0.9rem;
-      margin-top: 10px;
-      color: #5c3a21;
-    }
-
-    .generator-box {
-      background: #ffffff;
-      padding: 20px;
-      border-radius: 16px;
+    .note-box {
+      font-size: 0.85rem;
+      color: #d35400;
+      background: rgba(255, 255, 255, 0.7);
+      padding: 8px;
+      border-radius: 8px;
+      margin-bottom: 15px;
       text-align: center;
       font-weight: bold;
+    }
+
+    .tap-effect {
+      text-decoration: underline;
+      text-decoration-style: wavy;
+      text-decoration-color: #e67e22;
       color: #d35400;
-      margin-bottom: 20px;
-      min-height: 70px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      border: 2px solid #e67e22;
+      cursor: pointer;
+      font-weight: bold;
     }
 
-    .hangout-image-container {
-      width: 100%;
-      height: 220px;
-      border-radius: 16px;
-      overflow: hidden;
-      margin-bottom: 20px;
-      display: none;
-      box-shadow: 0 4px 15px rgba(0,0,0,0.1);
-      border: 3px solid #ffffff;
+    .floating-emoji {
+      position: fixed;
+      font-size: 2rem;
+      pointer-events: none;
+      animation: floatUp 1.5s ease-out forwards;
+      z-index: 1000;
     }
 
-    .hangout-image-container img {
-      width: 100%;
-      height: 100%;
-      object-fit: cover;
-    }
-
-    .error-msg {
-      color: #c0392b;
-      font-size: 0.85rem;
-      text-align: center;
-      display: none;
-      margin-bottom: 10px;
+    @keyframes floatUp {
+      0% { opacity: 1; transform: translateY(0) scale(1); }
+      100% { opacity: 0; transform: translateY(-120px) scale(1.5); }
     }
   </style>
 </head>
 <body>
 
-  <div class="container theme-level-1" id="main-container">
-    
+  <div class="container theme-peach" id="main-container">
+
     <!-- LEVEL 1: PASSCODE -->
-    <div id="level-1" class="level active">
+    <div id="p-passcode" class="page active">
       <h1>Welcome Mawutor ✨</h1>
-      <p>Enter the secret passcode to unlock your gift.</p>
+      <p>Enter the secret passcode to unlock your gift 🔑✨</p>
       <input type="password" id="passcode-input" placeholder="Enter secret code...">
-      <p id="passcode-error" class="error-msg">Incorrect passcode! Try again.</p>
+      <p id="passcode-error" style="color:#c0392b; display:none; text-align:center;">Incorrect passcode! Try again.</p>
       <button onclick="checkPasscode()">Unlock 🔓</button>
     </div>
 
-    <!-- LEVEL 2: QUIZ -->
-    <div id="level-2" class="level">
-      <h2>Level 1: Quick Quiz 🧠</h2>
-      <p id="quiz-question">Question loading...</p>
-      <div id="quiz-options"></div>
-      <p id="quiz-error" class="error-msg">Oops, wrong answer! Try again.</p>
+    <!-- LEVEL 2: QUIZ PAGES -->
+    <div id="p-q1" class="page">
+      <h2>Level 1: Quiz 🧠 (1/3)</h2>
+      <p><b>What's my favourite colour? 🎨</b></p>
+      <button class="options-btn" onclick="checkQuiz(1, true)">A. Pink 💖</button>
+      <button class="options-btn" onclick="checkQuiz(1, false)">B. Blue 💙</button>
+      <button class="options-btn" onclick="checkQuiz(1, false)">C. Green 💚</button>
+      <button class="options-btn" onclick="checkQuiz(1, false)">D. Brown 🤎</button>
+      <button class="options-btn" onclick="checkQuiz(1, false)">E. All 🌈</button>
     </div>
 
-    <!-- LEVEL 3: FILL IN THE BLANKS -->
-    <div id="level-3" class="level">
-      <h2>Level 2: Memory Lane 📝</h2>
-      <p>Fill out these short prompts!</p>
-
-      <form id="memory-form" onsubmit="sendAnswersSilently(event)">
-        <label><b>1. Your favorite memory with me:</b></label>
-        <textarea id="fav-memory" required placeholder="Type your answer here..."></textarea>
-
-        <label><b>2. One thing that always makes you laugh:</b></label>
-        <textarea id="funny-moment" required placeholder="Type your answer here..."></textarea>
-
-        <button type="submit" id="submit-btn">Submit & Next Level 🎉</button>
-      </form>
+    <div id="p-q2" class="page">
+      <h2>Level 1: Quiz 🧠 (2/3)</h2>
+      <p><b>What's my favourite thing to do? 💭</b></p>
+      <button class="options-btn" onclick="checkQuiz(2, false)">A. Read 📚</button>
+      <button class="options-btn" onclick="checkQuiz(2, false)">B. Sleep 😴</button>
+      <button class="options-btn" onclick="checkQuiz(2, false)">C. Doomscroll 📱</button>
+      <button class="options-btn" onclick="checkQuiz(2, false)">D. Watch anime 🍿</button>
+      <button class="options-btn" onclick="checkQuiz(2, true)">E. All 🌟</button>
     </div>
 
-    <!-- LEVEL 4: APPRECIATION CARDS -->
-    <div id="level-4" class="level">
-      <h2>Level 3: Tap to Reveal 💌</h2>
-      <p>Click on each card to read a message!</p>
-      <div class="cards-grid">
-        <div class="card" onclick="toggleCard(this)">
-          <h3> Card 1 🧡 </h3>
-          <div class="card-content">You always know how to brighten my day!</div>
-        </div>
-        <div class="card" onclick="toggleCard(this)">
-          <h3> Card 2 🍊 </h3>
-          <div class="card-content">Grateful for all our shared moments and laughs.</div>
-        </div>
-        <div class="card" onclick="toggleCard(this)">
-          <h3> Card 3 🥐 </h3>
-          <div class="card-content">Thank you for being completely amazing.</div>
-        </div>
-      </div>
-      <button onclick="nextLevel(5)">Go to Final Level 🎉</button>
+    <div id="p-q3" class="page">
+      <h2>Level 1: Quiz 🧠 (3/3)</h2>
+      <p><b>If I was in a bad situation what would I do? 🚨</b></p>
+      <button class="options-btn" onclick="checkQuiz(3, true)">A. Panic then think 😱🤯</button>
+      <button class="options-btn" onclick="checkQuiz(3, false)">B. Get right to solving it 🛠️</button>
+      <button class="options-btn" onclick="checkQuiz(3, false)">C. Ignore it 🙈</button>
     </div>
 
-    <!-- LEVEL 5: HANGOUT GENERATOR -->
-    <div id="level-5" class="level">
-      <h2>Final Level: Hangout Generator 🎲</h2>
-      <p>Can't decide what to do? Let the generator pick our next hangout!</p>
-      
-      <div class="generator-box" id="hangout-display">Click below to generate an idea!</div>
-      
-      <div class="hangout-image-container" id="image-box">
-        <img id="hangout-img" src="" alt="Hangout Idea Image">
-      </div>
+    <!-- LEVEL 3: PROMPTS -->
+    <div id="p-m1" class="page">
+      <h2>Level 2: Prompts 📝 (1/5)</h2>
+      <p><b>1. What do I remind you of? 💭✨</b></p>
+      <textarea id="ans-1" placeholder="Type your answer here..."></textarea>
+      <button onclick="nextPage('p-m2', 'theme-sunset')">Next Prompt ➔</button>
+    </div>
 
-      <button onclick="generateHangout()">Generate Hangout Idea 🎯</button>
+    <div id="p-m2" class="page">
+      <h2>Level 2: Prompts 📝 (2/5)</h2>
+      <p><b>2. What song comes to mind when you think of me? 🎶🎧</b></p>
+      <textarea id="ans-2" placeholder="Type your answer here..."></textarea>
+      <button onclick="nextPage('p-m3', 'theme-sunset')">Next Prompt ➔</button>
+    </div>
+
+    <div id="p-m3" class="page">
+      <h2>Level 2: Prompts 📝 (3/5)</h2>
+      <p><b>3. What do you like about me? 🙈❤️</b></p>
+      <textarea id="ans-3" placeholder="Type your answer here..."></textarea>
+      <button onclick="nextPage('p-m4', 'theme-sunset')">Next Prompt ➔</button>
+    </div>
+
+    <div id="p-m4" class="page">
+      <h2>Level 2: Prompts 📝 (4/5)</h2>
+      <p><b>4. Do you enjoy spending time with me? If yes... what's your favourite thing to do with me? 🥺🧸</b></p>
+      <textarea id="ans-4" placeholder="Type your answer here..."></textarea>
+      <button onclick="nextPage('p-m5', 'theme-sunset')">Next Prompt ➔</button>
+    </div>
+
+    <div id="p-m5" class="page">
+      <h2>Level 2: Prompts 📝 (5/5)</h2>
+      <p><b>5. What's one thing I do that makes you think "i think shes not okay let me ask het if she's sure about how she's feeling"? 🤨🤪</b></p>
+      <textarea id="ans-5" placeholder="Type your answer here..."></textarea>
+      <button id="sub-btn" onclick="submitPrompts()">Submit Responses 🎉</button>
+    </div>
+
+    <!-- LEVEL 4: CARDS -->
+    <div id="p-c1" class="page">
+      <h2>Level 3: Cards 💌 (1/4)</h2>
+      <p>I genuinely love all the time we've spent together... old, present and future (if it makes sense) 🤍. They are all beautiful... ✨</p>
+      <button onclick="nextPage('p-c2', 'theme-amber')">Next Card ➔</button>
+    </div>
+
+    <div id="p-c2" class="page">
+      <h2>Level 3: Cards 💌 (2/4)</h2>
+      <div class="note-box">💡 Tap on the underlined words to see what happens!</div>
+      <p>
+        You're unavoidable... funny... and you have 
+        <u class="tap-effect" onclick="triggerEmojiEffect('👀😉', event)">cute but weird eyes</u> 👀 but I like them. 
+        You have a really adorable smile with a 
+        <u class="tap-effect" onclick="triggerEmojiEffect('😂🤣', event)">cute laugh</u> 😂 to it. 
+        I really like the fact that you are 
+        <u class="tap-effect" onclick="triggerEmojiEffect('🌟💖', event)">your own person</u> ✨, 
+        it's very attractive... I'm happy I met you... to like and to admire Mawutor 🧡
+      </p>
+      <button onclick="nextPage('p-c3', 'theme-amber')">Next Card ➔</button>
+    </div>
+
+    <div id="p-c3" class="page">
+      <h2>Level 3: Cards 💌 (3/4)</h2>
+      <p>I still think the horse and dog joke is still funny and I laugh about it almost all the time if I remember... 😂😂💀</p>
+      <button onclick="nextPage('p-c4', 'theme-amber')">Next Card ➔</button>
+    </div>
+
+    <div id="p-c4" class="page">
+      <h2>Level 3: Cards 💌 (4/4)</h2>
+      <p>You’re my Pretty Mawutor... 🥰🧡</p>
+      <button onclick="nextPage('p-h1', 'theme-tangerine')">Plan Our Hangout 🎉</button>
+    </div>
+
+    <!-- LEVEL 5: HANGOUT CHOICE -->
+    <div id="p-h1" class="page">
+      <h2>Level 4: Hangout 🎲 (1/3)</h2>
+      <p><b>Choose Setting 📍:</b></p>
+      <button class="options-btn" onclick="saveHangout('setting', 'Indoors 🛏️', 'p-h2')">Indoors 🛏️</button>
+      <button class="options-btn" onclick="saveHangout('setting', 'Outdoors 🌃', 'p-h2')">Outdoors 🌃</button>
+    </div>
+
+    <div id="p-h2" class="page">
+      <h2>Level 4: Hangout 🎲 (2/3)</h2>
+      <p><b>Choose Food & Drinks 🍕:</b></p>
+      <button class="options-btn" onclick="saveHangout('food', 'Snacks & drinks 🍪🍟🍹', 'p-h3')">Snacks & drinks 🍪🍟🍹</button>
+      <button class="options-btn" onclick="saveHangout('food', 'Late night food 🌙🍔', 'p-h3')">Late night food 🌙🍔</button>
+      <button class="options-btn" onclick="saveHangout('food', 'Both 😋', 'p-h3')">Both 😋</button>
+    </div>
+
+    <div id="p-h3" class="page">
+      <h2>Level 4: Hangout 🎲 (3/3)</h2>
+      <p><b>Choose Activity 🎬:</b></p>
+      <button class="options-btn" onclick="saveHangout('activity', 'Watch movies, play music & talk 🎬🎶', 'p-final')">Watch movies 🎬, play music 🎶 and talk 🗣️</button>
+      <button class="options-btn" onclick="saveHangout('activity', 'Late night stroll & do whatever 🌌', 'p-final')">Late night stroll 🚶‍♂️ and do whatever... 🌌</button>
+    </div>
+
+    <!-- FINAL REVEAL -->
+    <div id="p-final" class="page">
+      <h2>Your Chosen Hangout 🎯</h2>
+      <div style="background:#fff; padding:15px; border-radius:12px; margin-bottom:20px; border:2px dashed #e67e22;" id="summary-box"></div>
+      <p style="font-size: 1.15rem; font-weight: bold; color: #d35400;">
+        "I wish I could have you and kiss you right now 😘, but you are so bent on staying far... 😤 Regardless, I love you so much Mawutor, a whole lot 🧡✨."
+      </p>
     </div>
 
   </div>
 
   <script>
-    // Passcode Check
+    const hangoutChoices = {};
+
     function checkPasscode() {
-      const code = document.getElementById('passcode-input').value;
-      if (code === '1729') {
-        nextLevel(2);
+      if (document.getElementById('passcode-input').value === '1729') {
+        nextPage('p-q1', 'theme-terracotta');
       } else {
         document.getElementById('passcode-error').style.display = 'block';
       }
     }
 
-    // Quiz Data
-    const quizData = [
-      {
-        question: "What is my absolute favorite color?",
-        options: ["Blue", "Pink", "Yellow", "Green"],
-        answer: 1
-      },
-      {
-        question: "What's our go-to activity when hanging out?",
-        options: ["Watching Movies", "Studying", "Grabbing Food", "All of the above"],
-        answer: 3
-      }
-    ];
-
-    let currentQuestion = 0;
-
-    function loadQuiz() {
-      const q = quizData[currentQuestion];
-      document.getElementById('quiz-question').innerText = q.question;
-      const optionsContainer = document.getElementById('quiz-options');
-      optionsContainer.innerHTML = '';
-
-      q.options.forEach((opt, index) => {
-        const btn = document.createElement('button');
-        btn.innerText = opt;
-        btn.className = 'options-btn';
-        btn.onclick = () => selectOption(index);
-        optionsContainer.appendChild(btn);
-      });
-    }
-
-    function selectOption(index) {
-      if (index === quizData[currentQuestion].answer) {
-        document.getElementById('quiz-error').style.display = 'none';
-        currentQuestion++;
-        if (currentQuestion < quizData.length) {
-          loadQuiz();
-        } else {
-          nextLevel(3);
-        }
+    function checkQuiz(qNum, isCorrect) {
+      if (isCorrect) {
+        if (qNum === 1) nextPage('p-q2', 'theme-terracotta');
+        if (qNum === 2) nextPage('p-q3', 'theme-terracotta');
+        if (qNum === 3) nextPage('p-m1', 'theme-sunset');
       } else {
-        document.getElementById('quiz-error').style.display = 'block';
+        sprinkleRedCrosses();
       }
     }
 
-    // Silent Form Submission using Web3Forms
-    function sendAnswersSilently(e) {
-      e.preventDefault();
+    function sprinkleRedCrosses() {
+      for (let i = 0; i < 12; i++) {
+        const x = document.createElement('div');
+        x.className = 'floating-emoji';
+        x.innerText = '❌️';
+        x.style.left = Math.random() * 80 + 10 + 'vw';
+        x.style.top = Math.random() * 60 + 20 + 'vh';
+        document.body.appendChild(x);
+        setTimeout(() => x.remove(), 1500);
+      }
+    }
 
-      const submitBtn = document.getElementById('submit-btn');
-      submitBtn.innerText = "Sending... 💌";
-      submitBtn.disabled = true;
+    function triggerEmojiEffect(emojis, event) {
+      const charArray = Array.from(emojis);
+      for (let i = 0; i < 8; i++) {
+        const el = document.createElement('div');
+        el.className = 'floating-emoji';
+        el.innerText = charArray[Math.floor(Math.random() * charArray.length)];
+        el.style.left = (event.clientX + (Math.random() * 60 - 30)) + 'px';
+        el.style.top = (event.clientY + (Math.random() * 40 - 20)) + 'px';
+        document.body.appendChild(el);
+        setTimeout(() => el.remove(), 1500);
+      }
+    }
+
+    function submitPrompts() {
+      const btn = document.getElementById('sub-btn');
+      btn.innerText = "Sending... 💌";
+      btn.disabled = true;
 
       const formData = new FormData();
-      formData.append("access_key", "98b7e615-4a5e-4def-8f42-18e8a144d757"); 
-      formData.append("subject", "Mawutor's Responses from your Interactive Website!");
-      formData.append("Favorite Memory", document.getElementById('fav-memory').value);
-      formData.append("Funny Moment", document.getElementById('funny-moment').value);
+      formData.append("access_key", "98b7e615-4a5e-4def-8f42-18e8a144d757");
+      formData.append("subject", "Mawutor's Interactive Gift Responses!");
+      formData.append("Prompt 1", document.getElementById('ans-1').value);
+      formData.append("Prompt 2", document.getElementById('ans-2').value);
+      formData.append("Prompt 3", document.getElementById('ans-3').value);
+      formData.append("Prompt 4", document.getElementById('ans-4').value);
+      formData.append("Prompt 5", document.getElementById('ans-5').value);
 
-      fetch("https://api.web3forms.com/submit", {
-        method: "POST",
-        body: formData
-      })
-      .then(response => response.json())
-      .then(data => {
-        nextLevel(4);
-      })
-      .catch(error => {
-        console.error("Submission error:", error);
-        nextLevel(4);
-      });
+      fetch("https://api.web3forms.com/submit", { method: "POST", body: formData })
+        .then(() => nextPage('p-c1', 'theme-amber'))
+        .catch(() => nextPage('p-c1', 'theme-amber'));
     }
 
-    // Card Flip
-    function toggleCard(card) {
-      const content = card.querySelector('.card-content');
-      content.style.display = content.style.display === 'block' ? 'none' : 'block';
-    }
-
-    // Hangout Ideas with Matching Images
-    const hangouts = [
-      {
-        text: "🍿 Cozy movie night with snacks of your choice!",
-        image: "https://images.unsplash.com/photo-1517604931442-7e0c8ed2963c?auto=format&fit=crop&w=800&q=80"
-      },
-      {
-        text: "🍕 Try out a new food spot in town.",
-        image: "https://images.unsplash.com/photo-1513104890138-7c749659a591?auto=format&fit=crop&w=800&q=80"
-      },
-      {
-        text: "🍦 Late night ice cream run & long talk.",
-        image: "https://images.unsplash.com/photo-1570197788417-0e82375c9371?auto=format&fit=crop&w=800&q=80"
-      },
-      {
-        text: "🎮 Gaming / Board game showdown!",
-        image: "https://images.unsplash.com/photo-1612287230202-1ff1d85d1bdf?auto=format&fit=crop&w=800&q=80"
-      },
-      {
-        text: "☕ Study session turned relaxed coffee date.",
-        image: "https://images.unsplash.com/photo-1501339847302-ac426a4a7cbb?auto=format&fit=crop&w=800&q=80"
+    function saveHangout(key, val, nextPg) {
+      hangoutChoices[key] = val;
+      if (nextPg === 'p-final') {
+        document.getElementById('summary-box').innerHTML = `
+          <p style="margin:5px 0;"><b>Setting:</b> ${hangoutChoices.setting}</p>
+          <p style="margin:5px 0;"><b>Food:</b> ${hangoutChoices.food}</p>
+          <p style="margin:5px 0;"><b>Activity:</b> ${hangoutChoices.activity}</p>
+        `;
+        nextPage('p-final', 'theme-tangerine');
+      } else {
+        nextPage(nextPg, 'theme-tangerine');
       }
-    ];
-
-    function generateHangout() {
-      const randomIdea = hangouts[Math.floor(Math.random() * hangouts.length)];
-      
-      // Update text
-      document.getElementById('hangout-display').innerText = randomIdea.text;
-      
-      // Update and display image
-      const imgContainer = document.getElementById('image-box');
-      const imgTag = document.getElementById('hangout-img');
-      imgTag.src = randomIdea.image;
-      imgContainer.style.display = 'block';
     }
 
-    // Navigation and Background Theme Switching
-    function nextLevel(levelNum) {
-      document.querySelectorAll('.level').forEach(el => el.classList.remove('active'));
-      document.getElementById(`level-${levelNum}`).classList.add('active');
-
-      // Update background theme class
+    function nextPage(pageId, themeClass) {
+      document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+      document.getElementById(pageId).classList.add('active');
       const container = document.getElementById('main-container');
-      container.className = `container theme-level-${levelNum}`;
-
-      if (levelNum === 2) loadQuiz();
+      container.className = `container ${themeClass}`;
     }
   </script>
 </body>
