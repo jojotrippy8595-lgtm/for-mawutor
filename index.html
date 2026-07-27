@@ -144,6 +144,41 @@
       0% { opacity: 1; transform: translateY(0) scale(1); }
       100% { opacity: 0; transform: translateY(-120px) scale(1.5); }
     }
+
+    /* BOUQUET & EXIT ANIMATION */
+    .bouquet-container {
+      text-align: center;
+      margin: 20px 0;
+      min-height: 150px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .main-bouquet {
+      font-size: 3.5rem;
+      display: inline-block;
+      animation: emergeAndPop 2.8s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+    }
+
+    @keyframes emergeAndPop {
+      0% { transform: scale(0.1) rotate(-10deg); opacity: 0; }
+      60% { transform: scale(2.2) rotate(5deg); opacity: 1; }
+      80% { transform: scale(2.5) rotate(0deg); opacity: 1; }
+      100% { transform: scale(0); opacity: 0; }
+    }
+
+    .exit-btn-container {
+      opacity: 0;
+      animation: revealExit 0.8s ease-in forwards;
+      animation-delay: 2.7s;
+    }
+
+    @keyframes revealExit {
+      from { opacity: 0; transform: translateY(15px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
   </style>
 </head>
 <body>
@@ -155,6 +190,7 @@
       <h1>Welcome Mawutor ✨</h1>
       <p>Enter the secret passcode to unlock your gift 🔑✨</p>
       <input type="password" id="passcode-input" placeholder="Enter secret code...">
+      <div class="note-box">💡 Hint: me + you = 🥳🎂🎊</div>
       <p id="passcode-error" style="color:#c0392b; display:none; text-align:center;">Incorrect passcode! Try again.</p>
       <button onclick="checkPasscode()">Unlock 🔓</button>
     </div>
@@ -221,6 +257,23 @@
       <h2>Level 2: Prompts 📝 (5/5)</h2>
       <p><b>5. What's one thing I do that makes you think "i think shes not okay let me ask het if she's sure about how she's feeling"? 🤨🤪</b></p>
       <textarea id="ans-5" placeholder="Type your answer here..."></textarea>
+      <button onclick="nextPage('p-meter', 'theme-sunset')">Next ➔</button>
+    </div>
+
+    <!-- MISS YOU METER PAGE -->
+    <div id="p-meter" class="page">
+      <h2>Level 2: Special Meter 🌡️❤️</h2>
+      <p><b>How much do you miss me right now? 🥺</b></p>
+      
+      <div style="text-align: center; margin: 25px 0;">
+        <span id="meter-display" style="font-size: 2.2rem; font-weight: bold; color: #d35400;">100% 🚀❤️</span>
+        <p id="meter-status" style="font-size: 0.95rem; color: #e67e22; margin-top: 5px;">"To the moon and back!"</p>
+        
+        <input type="range" id="miss-meter" min="0" max="100" value="100" 
+               style="width: 80%; margin-top: 15px; accent-color: #e67e22;" 
+               oninput="updateMeter(this.value)">
+      </div>
+
       <button id="sub-btn" onclick="submitPrompts()">Submit Responses 🎉</button>
     </div>
 
@@ -281,13 +334,34 @@
       <button class="options-btn" onclick="saveHangout('activity', 'Late night stroll & do whatever 🌌', 'p-final')">Late night stroll 🚶‍♂️ and do whatever... 🌌</button>
     </div>
 
-    <!-- FINAL REVEAL -->
+    <!-- FINAL HANGOUT REVEAL & SCREENSHOT PROMPT -->
     <div id="p-final" class="page">
       <h2>Your Chosen Hangout 🎯</h2>
-      <div style="background:#fff; padding:15px; border-radius:12px; margin-bottom:20px; border:2px dashed #e67e22;" id="summary-box"></div>
-      <p style="font-size: 1.15rem; font-weight: bold; color: #d35400;">
+      <div style="background:#fff; padding:15px; border-radius:12px; margin-bottom:15px; border:2px dashed #e67e22;" id="summary-box"></div>
+      
+      <div class="note-box" style="font-size:0.95rem; padding:12px; background:#fff3e6;">
+        📸 <b>Take a screenshot</b> of your ideal hangout above and send it to me!
+      </div>
+
+      <p style="font-size: 1.05rem; font-weight: bold; color: #d35400; margin-top:15px;">
         "I wish I could have you and kiss you right now 😘, but you are so bent on staying far... 😤 Regardless, I love you so much Mawutor, a whole lot 🧡✨."
       </p>
+      
+      <button onclick="triggerGrandExit()">Finish & See Gift 🎁</button>
+    </div>
+
+    <!-- GRAND FINALE / EXIT PAGE -->
+    <div id="p-exit" class="page">
+      <h2>For You 💐✨</h2>
+      <p>Thank you for being completely amazing Mawutor ❤️</p>
+
+      <div class="bouquet-container">
+        <span class="main-bouquet" id="main-bouquet-emoji">💐</span>
+      </div>
+
+      <div class="exit-btn-container">
+        <button onclick="closeSite()">Exit & Close 🚪✨</button>
+      </div>
     </div>
 
   </div>
@@ -305,11 +379,46 @@
 
     function checkQuiz(qNum, isCorrect) {
       if (isCorrect) {
-        if (qNum === 1) nextPage('p-q2', 'theme-terracotta');
-        if (qNum === 2) nextPage('p-q3', 'theme-terracotta');
-        if (qNum === 3) nextPage('p-m1', 'theme-sunset');
+        sprinkleFlowersAndLove();
+        setTimeout(() => {
+          if (qNum === 1) nextPage('p-q2', 'theme-terracotta');
+          if (qNum === 2) nextPage('p-q3', 'theme-terracotta');
+          if (qNum === 3) nextPage('p-m1', 'theme-sunset');
+        }, 800);
       } else {
         sprinkleRedCrosses();
+      }
+    }
+
+    function updateMeter(val) {
+      const display = document.getElementById('meter-display');
+      const status = document.getElementById('meter-status');
+      
+      if (val < 25) {
+        display.innerText = val + "% 🤨";
+        status.innerText = "Are you sure about that?! 😤";
+      } else if (val < 60) {
+        display.innerText = val + "% 🙂";
+        status.innerText = "Getting there... but try sliding higher! 👀";
+      } else if (val < 90) {
+        display.innerText = val + "% 🥰";
+        status.innerText = "A lot! Pretty sweet ❤️";
+      } else {
+        display.innerText = val + "% 🚀❤️";
+        status.innerText = "To the moon and back!! 💥✨";
+      }
+    }
+
+    function sprinkleFlowersAndLove() {
+      const items = ['🌸', '🌺', '🌻', '❤️', '💖', '✨', '🌹', '💐'];
+      for (let i = 0; i < 20; i++) {
+        const item = document.createElement('div');
+        item.className = 'floating-emoji';
+        item.innerText = items[Math.floor(Math.random() * items.length)];
+        item.style.left = Math.random() * 80 + 10 + 'vw';
+        item.style.top = Math.random() * 60 + 20 + 'vh';
+        document.body.appendChild(item);
+        setTimeout(() => item.remove(), 1500);
       }
     }
 
@@ -346,11 +455,13 @@
       const formData = new FormData();
       formData.append("access_key", "98b7e615-4a5e-4def-8f42-18e8a144d757");
       formData.append("subject", "Mawutor's Interactive Gift Responses!");
+      
       formData.append("Prompt 1", document.getElementById('ans-1').value);
       formData.append("Prompt 2", document.getElementById('ans-2').value);
       formData.append("Prompt 3", document.getElementById('ans-3').value);
       formData.append("Prompt 4", document.getElementById('ans-4').value);
       formData.append("Prompt 5", document.getElementById('ans-5').value);
+      formData.append("How Much He Misses You", document.getElementById('miss-meter').value + "%");
 
       fetch("https://api.web3forms.com/submit", { method: "POST", body: formData })
         .then(() => nextPage('p-c1', 'theme-amber'))
@@ -371,6 +482,18 @@
       }
     }
 
+    function triggerGrandExit() {
+      nextPage('p-exit', 'theme-peach');
+      setTimeout(() => {
+        sprinkleFlowersAndLove();
+      }, 2300);
+    }
+
+    function closeSite() {
+      alert("Thank you for visiting! You can close this tab now ❤️");
+      window.close();
+    }
+
     function nextPage(pageId, themeClass) {
       document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
       document.getElementById(pageId).classList.add('active');
@@ -380,3 +503,4 @@
   </script>
 </body>
 </html>
+
